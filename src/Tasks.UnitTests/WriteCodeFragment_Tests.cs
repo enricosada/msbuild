@@ -673,6 +673,7 @@ namespace Microsoft.Build.UnitTests
                 actualContent,
                 expectedAttributes,
                 "//",
+                null,
                 "using System;",
                 "using System.Reflection;");
         }
@@ -683,6 +684,7 @@ namespace Microsoft.Build.UnitTests
                 actualContent,
                 expectedAttributes,
                 "'",
+                null,
                 "Option Strict Off",
                 "Option Explicit On",
                 "Imports System",
@@ -695,13 +697,14 @@ namespace Microsoft.Build.UnitTests
                 actualContent,
                 expectedAttributes,
                 "//",
+                "()",
                 "open System",
                 "open System.Reflection");
         }
 
-        private static void CheckContent(string actualContent, string[] expectedAttributes, string commentStart, params string[] expectedHeader)
+        private static void CheckContent(string actualContent, string[] expectedAttributes, string commentStart, string expectedFooter, params string[] expectedHeader)
         {
-            string expectedContent = string.Join(Environment.NewLine, expectedHeader.Concat(expectedAttributes));
+            string expectedContent = string.Join(Environment.NewLine, expectedHeader.Concat(expectedAttributes).Concat(expectedFooter != null? new[] { expectedFooter } : new string[0]));
 
             // we tolerate differences in whitespace and comments between platforms
             string normalizedActualContent = string.Join(
